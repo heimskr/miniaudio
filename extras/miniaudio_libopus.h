@@ -172,7 +172,7 @@ MA_API ma_result ma_libopus_init(ma_read_proc onRead, ma_seek_proc onSeek, ma_te
     ma_result result;
 
     (void)pAllocationCallbacks; /* Can't seem to find a way to configure memory allocations in libopus. */
-    
+
     result = ma_libopus_init_internal(pConfig, pOpus);
     if (result != MA_SUCCESS) {
         return result;

@@ -134,7 +134,7 @@ static long ma_libvorbis_vf_callback__tell(void* pUserData)
     ma_libvorbis* pVorbis = (ma_libvorbis*)pUserData;
     ma_result result;
     ma_int64 cursor;
-    
+
     result = pVorbis->onTell(pVorbis->pReadSeekTellUserData, &cursor);
     if (result != MA_SUCCESS) {
         return -1;
@@ -178,7 +178,7 @@ MA_API ma_result ma_libvorbis_init(ma_read_proc onRead, ma_seek_proc onSeek, ma_
     ma_result result;
 
     (void)pAllocationCallbacks; /* Can't seem to find a way to configure memory allocations in libvorbis. */
-    
+
     result = ma_libvorbis_init_internal(pConfig, pVorbis);
     if (result != MA_SUCCESS) {
         return result;
@@ -326,7 +326,7 @@ MA_API ma_result ma_libvorbis_read_pcm_frames(ma_libvorbis* pVorbis, void* pFram
                     }
                 }
             } else {
-                libvorbisResult = ov_read(&pVorbis->vf, ma_offset_pcm_frames_ptr(pFramesOut, totalFramesRead, format, channels), framesToRead * ma_get_bytes_per_frame(format, channels), 0, 2, 1, NULL);
+                libvorbisResult = ov_read(&pVorbis->vf, (char *) ma_offset_pcm_frames_ptr(pFramesOut, totalFramesRead, format, channels), framesToRead * ma_get_bytes_per_frame(format, channels), 0, 2, 1, NULL);
                 if (libvorbisResult < 0) {
                     result = MA_ERROR;  /* Error while decoding. */
                     break;
