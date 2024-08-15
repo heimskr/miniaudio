@@ -3854,7 +3854,9 @@ typedef ma_uint16 wchar_t;
     risk is yours to take and no support will be offered if you enable this option.
     */
     #ifndef MA_NO_PTHREAD_IN_HEADER
-        #include <pthread.h>    /* Unfortunate #include, but needed for pthread_t, pthread_mutex_t and pthread_cond_t types. */
+        #ifndef MA_NO_PTHREAD_INCLUDE
+            #include <pthread.h>    /* Unfortunate #include, but needed for pthread_t, pthread_mutex_t and pthread_cond_t types. */
+        #endif
         typedef pthread_t       ma_pthread_t;
         typedef pthread_mutex_t ma_pthread_mutex_t;
         typedef pthread_cond_t  ma_pthread_cond_t;
