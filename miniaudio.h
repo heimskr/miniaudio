@@ -16187,7 +16187,7 @@ static void ma_thread_wait__posix(ma_thread* pThread)
 static ma_result ma_mutex_init__posix(ma_mutex* pMutex)
 {
     int result;
-    
+
     if (pMutex == NULL) {
         return MA_INVALID_ARGS;
     }
@@ -74380,7 +74380,14 @@ static void ma_engine_node_process_pcm_frames__sound(ma_node* pNode, const float
     */
     result = ma_data_source_get_data_format(pSound->pDataSource, &dataSourceFormat, &dataSourceChannels, NULL, NULL, 0);
     if (result == MA_SUCCESS) {
-        tempCapInFrames = sizeof(temp) / ma_get_bytes_per_frame(dataSourceFormat, dataSourceChannels);
+        ma_uint32 bytes_per_frame = ma_get_bytes_per_frame(dataSourceFormat, dataSourceChannels);
+
+        if (bytes_per_frame == 0) {
+            *pFrameCountOut = totalFramesRead;
+            return;
+        }
+
+        tempCapInFrames = sizeof(temp) / bytes_per_frame;
 
         /* Keep reading until we've read as much as was requested or we reach the end of the data source. */
         while (totalFramesRead < frameCount) {
