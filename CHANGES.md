@@ -1,3 +1,54 @@
+v0.11.25 - 2026-03-04
+=====================
+* Bug fixes to the WAV decoder.
+* Fixed warnings with the Emscripten build relating to the renaming of of `__EMSCRIPTEN_major/minor/tiny__` macros.
+* Win32: Fixed an error with runtime linking on the UWP build. This is actually a non issue in practice because it would require miniaudio to pass in a DLL name of longer than 2048 characters which it never does.
+
+
+v0.11.24 - 2026-01-17
+=====================
+* Fixed a possible glitch when processing the audio of a `ma_sound` when doing resampling.
+* Fixed a possible crash in the node graph relating to scheduled starts and stops.
+* Fixed a bug where MA_NO_DECODING would disable the WAV encoder.
+* Fixed a pthread compatibility issue, particularly with Android.
+* Fixed a possible crash in the resource manager.
+* Fixed a possible double-uninit error when a decoder fails to initialize.
+* Fixed a compilation error with the MSVC Aarch64 build.
+* Addressed a few errors found through static analysis, particularly around possible null pointer dereferences.
+* `ma_sound_is_playing()` will now correctly return false when called from inside the end callback of a sound.
+* Miscellaneous compiler compatibility and warning fixes.
+* PulseAudio: Fix a resource leak when a context fails to connect.
+* Web: Fixed an error when uninitializing a context.
+
+
+v0.11.23 - 2025-09-11
+=====================
+* Fixed an error in `ma_channel_map_to_string()` where the output string is not null terminated correctly.
+* Fixed an error with logging due to mishandling of va_list.
+* Fixed some errors when compiling with `MA_NO_RUNTIME_LINKING`.
+* Fixed an error with `ma_sound` initialization where the initial loop points are not set correctly.
+* Fixed an alignment error with the ring buffer.
+* Fixed a memory leak in the resource manager when opening a file fails.
+* Fixed an assertion failure in the resource manager when opening a file fails.
+* Fixed a compilation warning relating to `MA_FALLTHROUGH`
+* Fixed an undefined behavior error in the s16 to s32 conversion routine.
+* Fixed an undefined behavior error relating to MurmurHash3.
+* Fixed an undefined behavior error with the LCG random number generator.
+* Fixed a compilation error with `MA_NO_SSE2`.
+* Fixed some unused function warnings.
+* Fixed a rare, but technically possible division by zero error.
+* Some const correctness fixes for `ma_sound`.
+* Improved compatibility with old versions of GCC.
+* Miscellaneous documentation fixes.
+* WAV, FLAC and MP3 decoders have been brought up to date with dr_libs. Of particular note, this should fix some long outstanding bugs with MP3 due to metadata not being handled correctly.
+* POSIX: Added a fallback for when creation of a real-time thread fails. This fallback can be disabled with `MA_NO_PTHREAD_REALTIME_PRIORITY_FALLBACK` if you need an explicit failure.
+* POSIX: pthread.h is no longer included when `MA_NO_THREADING` is defined.
+* WASAPI: Improved handling of COM initialization and shutdown to make it a bit more robust.
+* WASAPI: Fix an error due to a missing struct member.
+* PulseAudio: Fixed a crash when requesting a channel count greater than 32.
+* AAudio: Fixed a crash when uninitializing the device while in the middle of rerouting.
+
+
 v0.11.22 - 2025-02-24
 =====================
 * Starting from version 0.12, miniaudio will be switching to a split .c/h pair, away from a single header. In preparation for this, a file named "miniaudio.c" has been added to repository. Currently this is just a simple wrapper around miniaudio.h and `MINIAUDIO_IMPLEMENTATION`. Nothing has changed in miniaudio.h, however when version 0.12 is released you will need to use miniaudio.c for the implementation. It's recommended you start the transition away from `MINIAUDIO_IMPLEMENTATION` and towards miniaudio.c. If you want to keep building your project as a single translation unit, you can do `#include "miniaudio.c"` which will continue to be supported with version 0.12 and beyond.
